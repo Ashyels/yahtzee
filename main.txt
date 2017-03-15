@@ -1,0 +1,302 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <conio.h>
+#include <windows.h>
+#include <string.h>
+#include <ctype.h>
+#include <time.h>
+#include "Yahtzee.h"
+
+int main()
+{
+	int A = 0, B = 0, C = 0, D = 0, pilihan, kocok_lagi;
+	int dadu[5], batas = 3, kategori = 0;
+	int i, j, k, l, dadu_pilihan[5], skor = 0, count = 0, sort[5], temp;
+	char status[13];
+	
+	for(i=0; i<13; i++)
+	{
+		status[i] = '_';
+	}
+	system("MODE 100,50");
+
+	srand(time(NULL));
+
+	tampil_kategori(skor, status);
+			
+	printf("\n\nNilai Dadu:\n");
+
+	for(i=0; i<5; i++)
+	{
+		dadu[i] = kocok_dadu();
+		printf("Dadu ke-%i = %i\n", (i+1), dadu[i]);
+	}
+
+awal:
+	
+	printf("\n1. Kocok dadu kembali (Batas %i kali)\n", batas);
+	printf("2. Pilih Kategori\n");
+	printf("Masukkan nomor: ");	
+	scanf("%i", &pilihan);
+
+	if (pilihan == 1 && batas > 0)
+	{
+		batas--;
+		printf("\nBerapa dadu yang ingin dikocok? ");
+		scanf("%i", &kocok_lagi);
+		printf("Dadu bedapa saja yang ingin dikocok?\n");
+		for(i=0; i<kocok_lagi; i++)
+		{
+			printf("Dadu ke-");
+			scanf("%i", &dadu_pilihan[i]);
+		}
+		
+		for(i=0; i<5; i++)
+		{
+			for(j=0; j<5; j++)
+			{
+				if((dadu_pilihan[i]-1) == j)
+				{
+					dadu[j] = kocok_dadu();		
+				}
+			}
+		}
+
+		for(i=0; i<5; i++)
+		{
+			dadu_pilihan[i] = 0;
+		}
+	
+	}
+		
+	else if(pilihan == 2)
+	{
+		printf("\nMasukkan nomor kategori: ");
+		scanf("%i", &kategori);
+		
+		if(kategori > 0 && kategori < 7 && status[kategori - 1] != 'X')
+		{
+			for(i=0; i<5; i++)
+			{
+				if(dadu[i] == kategori)
+				skor = skor + kategori;
+			}			
+			C++;		
+		}
+		
+		if(kategori > 6 && kategori < 14)
+		{
+			if(kategori == 7 && status[kategori - 1] != 'X')
+			{
+				for(i=0; i<j; i++)
+				{
+					for(j=i+1; j<k; j++)
+					{
+						for(k=j+1; k<5; k++)
+						{
+							if(dadu[i] == dadu[j] && dadu[i] == dadu[k])
+							{
+								skor = skor + dadu[0] + dadu[1] + dadu[2] + dadu[3] + dadu[4];
+								i = 5;
+							}
+						}
+					}
+				}
+				C++;		
+			}
+			
+			if(kategori == 8 && status[kategori - 1] != 'X')
+			{
+				for(i=0; i<j; i++)
+				{
+					for(j=i+1; j<k; j++)
+					{
+						for(k=j+1; k<l; k++)
+						{
+							for(l=k+1; l<5; l++)
+							{
+								if(dadu[i] == dadu[j] && dadu[i] == dadu[k] && dadu[i] == dadu[l])
+								{
+									skor = skor + dadu[0] + dadu[1] + dadu[2] + dadu[3] + dadu[4];
+									i = 5;
+								}
+							}
+						}
+					}
+				}
+				C++;		
+			}
+
+			if(kategori == 9 && status[kategori - 1] != 'X')
+			{
+				for(i=0; i<j; i++)
+				{
+					for(j=i+1; j<5; j++)
+					{
+						if(dadu[i] == dadu[j])
+						A++;
+						else
+						B++;						
+					}
+				}
+				
+				if(A == 4 && B == 6)
+				{
+					skor = skor + 25;
+				}
+
+				C++;		
+			}
+			
+			if(kategori == 10 && status[kategori - 1] != 'X')
+			{
+				for(i=0; i<5; i++)
+				{
+					sort[i] = dadu[i];
+				}							
+
+				for(i=0; i<5; i++)
+				{
+					for(j=0; j<4; j++)
+					{
+						if(sort[j] > sort[j+1])
+						{
+							temp = sort[j];
+							sort[j] = sort[j+1];
+							sort[j+1] = temp;
+						}
+					}
+				}
+
+				for(i=0; i<j; i++)
+				{
+					for(j=i+1; j<5; j++)
+					{
+						if(sort[i] == sort[j])
+						count++;						
+					}
+				}
+					
+				if(count == 0 || count == 1)
+				{
+					if(sort[0] == (sort[1]-1) && sort[1] == (sort[2]-1) && sort[2] == (sort[3]-1))
+					{
+						skor = skor + 30;
+					}
+					else if(sort[1] == (sort[2]-1) && sort[2] == (sort[3]-1) && sort[3] == (sort[4]-1))
+					{
+						skor = skor + 30;
+					}
+					else if(sort[0] == (sort[1]-1) && sort[1] == (sort[2]-1) && sort[2] == (sort[3]-1) && sort[3] == (sort[4]-1))
+					{
+						skor = skor + 30;
+					}
+				}
+
+				C++;		
+
+			}
+			
+			if(kategori == 11 && status[kategori - 1] != 'X')
+			{
+				for(i=0; i<j; i++)
+				{
+					for(j=i+1; j<5; j++)
+					{
+						if(dadu[i] == dadu[j])
+						count++;						
+					}
+				}
+				if(count == 0)
+				{
+					for(i=0; i<5; i++)
+					{
+						sort[i] = dadu[i];
+					}							
+
+					for(i=0; i<5; i++)
+					{
+						for(j=0; j<4; j++)
+						{
+							if(sort[j] > sort[j+1])
+							{
+								temp = sort[j];
+								sort[j] = sort[j+1];
+								sort[j+1] = temp;
+							}
+						}
+					}
+
+					if(sort[0] == (sort[1]-1) && sort[1] == (sort[2]-1) && sort[2] == (sort[3]-1) && sort[3] == (sort[4]-1))
+					{
+						skor = skor + 40;
+					}
+					C++;		
+				}
+			}
+			
+			if(kategori == 12 && status[kategori - 1] != 'X')
+			{
+				if(dadu[0] == dadu[1] && dadu[0] == dadu[2] && dadu[0] == dadu[3] && dadu[0] == dadu[4])
+				{
+					skor = skor + 50;
+				}
+
+				C++;						
+			}
+			
+			if(kategori == 13 && status[kategori - 1] != 'X')
+			{
+				skor = skor + dadu[0] + dadu[1] + dadu[2] + dadu[3] + dadu[4];
+			}
+
+			C++;		
+		}
+		
+		status[kategori - 1] = 'X';
+	}	
+
+		tampil_kategori(skor, status);
+
+		if(C > 0)
+		{
+			for(i=0; i<5; i++)
+			{
+				dadu[i] = kocok_dadu();
+			}
+			Sleep(1500);
+			batas = 3;
+		}		
+		C = 0;
+
+		close();
+		tampil_kategori(skor, status);
+
+		for(i=0; i<13; i++)
+		{
+			if (status[i] == 'X')
+			D++;
+		}
+		
+		if(D == 13)
+			goto akhir;
+		else
+			D = 0;		
+		
+		printf("\n");
+		printf("\nNilai Dadu:\n");
+	
+		for(i=0; i<5; i++)
+		{
+			printf("Dadu ke-%i = %i\n", (i+1), dadu[i]);
+		}	
+		
+	goto awal;
+
+akhir:
+	
+	system("cls");
+	printf("Total Skor Anda = %i", skor);
+	
+	return 0;
+}
